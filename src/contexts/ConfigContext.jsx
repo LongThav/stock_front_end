@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { createContext, useReducer } from 'react';
-import * as actionType from '../store/actions';
+import * as actionType from '../redux/actions';
 import { CONFIG } from '../config/constant';
 
 const initialState = {

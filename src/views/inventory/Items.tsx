@@ -109,11 +109,11 @@ const ItemView = () => {
                         onChange={handleSelectAll}
                       />
                     </th>
-                    <th style={{ fontSize: 12 }}>NAME</th>
-                    <th style={{ fontSize: 12 }}>SKU</th>
-                    <th style={{ fontSize: 12 }}>TYPE</th>
-                    <th style={{ fontSize: 12 }}>DESCRIPTION</th>
-                    <th style={{ fontSize: 12 }}>RATE</th>
+                    <th style={{ }}>NAME</th>
+                    <th style={{ }}>SKU</th>
+                    <th style={{ }}>TYPE</th>
+                    <th style={{ }}>DESCRIPTION</th>
+                    <th style={{ }}>RATE</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -142,10 +142,10 @@ const ItemView = () => {
                           {item.name}
                         </div>
                       </td>
-                      <td style={{ fontSize: 12, fontWeight: 'bold', color: 'grey' }}>{item.sku}</td>
-                      <td style={{ fontSize: 12, fontWeight: 'bold', color: 'grey' }}>{item.type}</td>
-                      <td style={{ fontSize: 12, fontWeight: 'bold', color: 'grey' }}>{item.description}</td>
-                      <td style={{ fontSize: 12, fontWeight: 'bold', color: 'grey' }}>{item.rating}</td>
+                      <td style={{ }}>{item.sku}</td>
+                      <td style={{ }}>{item.type}</td>
+                      <td style={{ }}>{item.description}</td>
+                      <td style={{ }}>{item.rating}</td>
                     </tr>
                   ))}
                 </tbody>

@@ -6,13 +6,18 @@ import { ConfigProvider } from './contexts/ConfigContext';
 import './index.scss';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import store from '../src/store/index';
+import { Provider } from 'react-redux';
+
 
 const container = document.getElementById('root');
 const root = createRoot(container);
 root.render(
-  <ConfigProvider>
-    <App />
-  </ConfigProvider>
+  <Provider store={store}>
+    <ConfigProvider>
+      <App />
+    </ConfigProvider>
+  </Provider>
 );
 
 reportWebVitals();

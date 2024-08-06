@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 
 import { ConfigContext } from '../../../../contexts/ConfigContext';
-import * as actionType from '../../../../store/actions';
+import * as actionType from '../../../../redux/actions';
 
 const NavLogo = () => {
   const configContext = useContext(ConfigContext);

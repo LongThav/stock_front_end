@@ -20,22 +20,20 @@ File: style.css
         -   Invoice, Full Calender, File Upload,
 =================================================================================
 =================================================================================== */
+
 @import 'bootstrap/dist/css/bootstrap';
 // General theme contents
 @import 'partials/variables';
 @import 'partials/general';
 @import 'partials/generic';
 @import 'partials/mixins/function';
-
 // icon
 @import 'partials/font/next-icon';
 @import 'partials/font/feather';
 @import 'partials/font/fontawesome';
-
 // important Element
 @import 'partials/menu/menu-lite';
 @import 'partials/widget/widget';
-
 // Theme Element
 @import 'partials/theme-elements/form';
 @import 'partials/theme-elements/radiobox-checkbox';
@@ -46,8 +44,6 @@ File: style.css
 @import 'partials/theme-elements/breadcrumb-pagination';
 @import 'partials/theme-elements/progress';
 @import 'partials/theme-elements/nav';
-
 // Other
 @import 'partials/other/chat';
-
 @import 'partials/third-party/third-party';

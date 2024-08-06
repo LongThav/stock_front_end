@@ -1,16 +1,40 @@
-import React from 'react';
+import Reac from 'react';
 import { Row, Col, Alert, Button } from 'react-bootstrap';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
+import '../../auth/signin/style/JWTLogin.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { login } from 'redux/actions/authAction';
+
 
 const JWTLogin = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { loading, error } = useSelector((state) => state.auth);
+
+
+  const handleLogin = (values, { setSubmitting, setErrors }) => {
+    dispatch(
+      login(values, (responseError) => {
+        setSubmitting(false);
+        if (responseError) {
+          setErrors({ submit: responseError });
+        } else {
+          navigate('/app/dashboard/default');
+        }
+      })
+    );
+  };
   return (
     <Formik
       initialValues={{
-        email: 'info@codedthemes.com',
-        password: '123456',
+        email: '',
+        password: '',
         submit: null
       }}
+      onSubmit={handleLogin}
       validationSchema={Yup.object().shape({
         email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
         password: Yup.string().max(255).required('Password is required')
@@ -23,27 +47,33 @@ const JWTLogin = () => {
               className="form-control"
               label="Email Address / Username"
               name="email"
+              placeholder="Email address"
               onBlur={handleBlur}
               onChange={handleChange}
               type="email"
               value={values.email}
             />
-            {touched.email && errors.email && <small className="text-danger form-text">{errors.email}</small>}
+            {touched.email && errors.email && (
+              <h3 style={{ color: 'red', fontSize: 12, paddingTop: 5, textAlign: 'start' }}>{errors.email}</h3>
+            )}
           </div>
           <div className="form-group mb-4">
             <input
               className="form-control"
               label="Password"
               name="password"
+              placeholder="Password"
               onBlur={handleBlur}
               onChange={handleChange}
               type="password"
               value={values.password}
             />
-            {touched.password && errors.password && <small className="text-danger form-text">{errors.password}</small>}
+            {touched.password && errors.password && (
+              <h3 style={{ color: 'red', fontSize: 12, paddingTop: 5, textAlign: 'start' }}>{errors.password}</h3>
+            )}
           </div>
 
-          <div className="custom-control custom-checkbox  text-start mb-4 mt-2">
+          <div className="custom-control custom-checkbox text-start mb-4 mt-2">
             <input type="checkbox" className="custom-control-input mx-2" id="customCheck1" />
             <label className="custom-control-label" htmlFor="customCheck1">
               Save credentials.
@@ -52,7 +82,7 @@ const JWTLogin = () => {
 
           {errors.submit && (
             <Col sm={12}>
-              <Alert>{errors.submit}</Alert>
+              <Alert className="text-start" style={{ textAlign: 'left', color: 'green' }}>{errors.submit}</Alert>
             </Col>
           )}
 

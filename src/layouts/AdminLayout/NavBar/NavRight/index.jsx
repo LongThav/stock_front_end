@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, ListGroup, Dropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import PerfectScrollbar from 'react-perfect-scrollbar';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchProfileRequest } from 'redux/actions/accountAction';
 
 import ChatList from './ChatList';
 
@@ -11,7 +13,9 @@ import avatar3 from '../../../../assets/images/user/avatar-3.jpg';
 import avatar4 from '../../../../assets/images/user/avatar-4.jpg';
 
 const NavRight = () => {
-  const [listOpen, setListOpen] = useState(false);
+  const dispatch = useDispatch();
+  const { profile, loading, error } = useSelector(state => state.account);
+
 
   const notiData = [
     {
@@ -33,6 +37,13 @@ const NavRight = () => {
       activity: 'yesterday'
     }
   ];
+
+  useEffect(() => {
+    dispatch(fetchProfileRequest());
+  }, [dispatch]);
+
+  const [listOpen, setListOpen] = useState(false);
+
 
   return (
     <React.Fragment>
@@ -65,7 +76,7 @@ const NavRight = () => {
                       <img className="img-radius" src={avatar1} alt="Generic placeholder" />
                       <Card.Body className="p-0">
                         <p>
-                          <strong>John Doe</strong>
+                          <strong>{profile?.fname ?? "" + " " + profile?.lname ?? ""}</strong>
                           <span className="n-time text-muted">
                             <i className="icon feather icon-clock me-2" />
                             30 min
@@ -123,7 +134,8 @@ const NavRight = () => {
             <Dropdown.Menu align="end" className="profile-notification">
               <div className="pro-head">
                 <img src={avatar1} className="img-radius" alt="User Profile" />
-                <span>John Doe</span>
+                {/* <span>John Doe</span> */}
+                <span>{(profile?.fname ?? "") + " " + (profile?.lname ?? "")}</span>
                 <Link to="#" className="dud-logout" title="Logout">
                   <i className="feather icon-log-out" />
                 </Link>

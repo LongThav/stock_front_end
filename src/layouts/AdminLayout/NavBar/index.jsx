@@ -5,7 +5,7 @@ import NavLeft from './NavLeft';
 import NavRight from './NavRight';
 
 import { ConfigContext } from '../../../contexts/ConfigContext';
-import * as actionType from '../../../store/actions';
+import * as actionType from '../../../redux/actions';
 
 const NavBar = () => {
   const [moreToggle, setMoreToggle] = useState(false);
