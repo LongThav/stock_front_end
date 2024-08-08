@@ -1,9 +1,11 @@
-// src/services/apiManager.js
 const baseUrl = 'http://3.106.139.121/api/'; // Replace with your base URL
 
 const ApiManager = {
     // Function to get the token from localStorage
     getToken: () => localStorage.getItem('token'),
+
+    // Function to get the refresh token from localStorage
+    getRefreshToken: () => localStorage.getItem('refreshToken'),
 
     // Function to remove tokens from localStorage and redirect to login
     logout: () => {
@@ -15,7 +17,7 @@ const ApiManager = {
     // Function to refresh the token
     refreshToken: async() => {
         try {
-            const refreshToken = localStorage.getItem('refreshToken');
+            const refreshToken = ApiManager.getRefreshToken();
             const response = await fetch(`${baseUrl}auth/refresh`, {
                 method: 'POST',
                 headers: {
@@ -23,9 +25,11 @@ const ApiManager = {
                 },
                 body: JSON.stringify({ refreshToken }),
             });
+
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
+
             const data = await response.json();
             localStorage.setItem('token', data.token); // Save new token
             localStorage.setItem('refreshToken', data.refreshToken); // Save new refresh token
@@ -38,10 +42,11 @@ const ApiManager = {
     },
 
     // Handle fetch requests with token management
-    fetchWithToken: async(url, options = {}) => {
+    fetch: async(url, options = {}) => {
+        let token = ApiManager.getToken(); // Retrieve token from localStorage
+
         try {
-            const token = ApiManager.getToken();
-            const response = await fetch(url, {
+            let response = await fetch(url, {
                 ...options,
                 headers: {
                     'Content-Type': 'application/json',
@@ -52,16 +57,22 @@ const ApiManager = {
 
             if (response.status === 401) { // Token expired or unauthorized
                 // Attempt to refresh the token
-                const newToken = await ApiManager.refreshToken();
+                token = await ApiManager.refreshToken();
+
                 // Retry the original request with the new token
-                return await fetch(url, {
+                response = await fetch(url, {
                     ...options,
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${newToken}`,
+                        'Authorization': `Bearer ${token}`,
                         ...options.headers,
                     },
                 });
+
+                if (response.status === 401) {
+                    // If still unauthorized, logout
+                    ApiManager.logout();
+                }
             }
 
             if (!response.ok) {
@@ -76,7 +87,7 @@ const ApiManager = {
 
     get: async(end_point) => {
         try {
-            return await ApiManager.fetchWithToken(`${baseUrl}${end_point}`, { method: 'GET' });
+            return await ApiManager.fetch(`${baseUrl}${end_point}`, { method: 'GET' });
         } catch (error) {
             console.error("GET request error:", error);
             throw error;
@@ -85,7 +96,7 @@ const ApiManager = {
 
     post: async(end_point, body) => {
         try {
-            return await ApiManager.fetchWithToken(`${baseUrl}${end_point}`, {
+            return await ApiManager.fetch(`${baseUrl}${end_point}`, {
                 method: 'POST',
                 body: JSON.stringify(body),
             });
@@ -97,7 +108,7 @@ const ApiManager = {
 
     put: async(end_point, data) => {
         try {
-            return await ApiManager.fetchWithToken(`${baseUrl}${end_point}`, {
+            return await ApiManager.fetch(`${baseUrl}${end_point}`, {
                 method: 'PUT',
                 body: JSON.stringify(data),
             });
@@ -109,7 +120,7 @@ const ApiManager = {
 
     delete: async(end_point) => {
         try {
-            return await ApiManager.fetchWithToken(`${baseUrl}${end_point}`, { method: 'DELETE' });
+            return await ApiManager.fetch(`${baseUrl}${end_point}`, { method: 'DELETE' });
         } catch (error) {
             console.error("DELETE request error:", error);
             throw error;
