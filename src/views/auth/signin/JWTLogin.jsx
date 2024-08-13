@@ -16,6 +16,7 @@ const JWTLogin = () => {
 
 
   const handleLogin = (values, { setSubmitting, setErrors }) => {
+    // console.log(values);
     dispatch(
       login(values, (responseError) => {
         setSubmitting(false);

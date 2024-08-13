@@ -129,7 +129,7 @@ const AddItem = () => {
 
                         </Col>
                         <Col md={6}>
-                            <Form.Group className="mb-3" controlId="formBasicName">
+                            <Form.Group className="mb-3" controlId="frmName">
                                 <Row style={{ marginBottom: '5px' }}>
                                     <Col>
                                         <h6 className="text-muted" style={{ display: 'inline' }}>Name</h6>
@@ -140,7 +140,7 @@ const AddItem = () => {
                             </Form.Group>
                         </Col>
                         <Col md={6}>
-                            <Form.Group className="mb-3" controlId="formBasicSKU">
+                            <Form.Group className="mb-3" controlId="frmSKU">
                                 <Row style={{ marginBottom: '5px' }}>
                                     <Col>
                                         <h6 className="text-muted" style={{ display: 'inline' }}>SKU</h6>
@@ -158,8 +158,8 @@ const AddItem = () => {
                                 </Col>
                             </Row>
                             <InputGroup>
-                                <Form.Control as="select">
-                                    <option value="" disabled selected hidden>Select or type to add</option>
+                                <Form.Control as="select" defaultValue={""}>
+                                    <option value="" disabled  hidden>Select or type to add</option>
                                     <option>DOZEN</option>
                                     <option>BOX</option>
                                     <option>GRAMS</option>
@@ -221,7 +221,7 @@ const AddItem = () => {
                             <ManufacturerForm />
                         </Col>
                         <Col md={6}>
-                            <Form.Group className="mb-3" controlId="formBasicName">
+                            <Form.Group className="mb-3" controlId="frmUPC">
                                 <Row style={{ marginBottom: '5px' }}>
                                     <Col>
                                         <h6 className="text-muted" style={{ display: 'inline' }}>UPC</h6>
@@ -232,7 +232,7 @@ const AddItem = () => {
                             </Form.Group>
                         </Col>
                         <Col md={6}>
-                            <Form.Group className="mb-3" controlId="formBasicName">
+                            <Form.Group className="mb-3" controlId="frmEAN">
                                 <Row style={{ marginBottom: '5px' }}>
                                     <Col>
                                         <h6 className="text-muted" style={{ display: 'inline' }}>EAN</h6>
@@ -243,7 +243,7 @@ const AddItem = () => {
                             </Form.Group>
                         </Col>
                         <Col md={6}>
-                            <Form.Group className="mb-3" controlId="formBasicName">
+                            <Form.Group className="mb-3" controlId="frmWeight">
                                 <Row style={{ marginBottom: '5px' }}>
                                     <Col>
                                         <h6 className="text-muted" style={{ display: 'inline' }}>Weight</h6>
@@ -260,7 +260,7 @@ const AddItem = () => {
                             <BranchItem />
                         </Col>
                         <Col md={6}>
-                            <Form.Group className="mb-3" controlId="formBasicName">
+                            <Form.Group className="mb-3" controlId="frmMPN">
                                 <Row style={{ marginBottom: '5px' }}>
                                     <Col>
                                         <h6 className="text-muted" style={{ display: 'inline' }}>MPN</h6>
@@ -271,7 +271,7 @@ const AddItem = () => {
                             </Form.Group>
                         </Col>
                         <Col md={6}>
-                            <Form.Group className="mb-3" controlId="formBasicName">
+                            <Form.Group className="mb-3" controlId="frmISBN">
                                 <Row style={{ marginBottom: '5px' }}>
                                     <Col>
                                         <h6 className="text-muted" style={{ display: 'inline' }}>ISBN </h6>
@@ -282,20 +282,20 @@ const AddItem = () => {
                             </Form.Group>
                         </Col>
                         <hr />
-                        <Form.Group className="mb-3 mt-1" controlId="formBasicChecbox">
+                        <Form.Group className="mb-3 mt-1" controlId="frmSaleI">
                             <Form.Check type="checkbox" label="Sales Information" style={{ color: 'black' }} />
                         </Form.Group>
-                        <FormInput label="Selling Price" onChange={{}} />
+                        <FormInput label="Selling Price" onChange={(event)=>{}} />
                         <Account />
-                        <DescriptionInput placeholder="" onChange={{}} />
+                        <DescriptionInput placeholder="" onChange={(event)=>{}} />
                         <Tax />
-                        <Form.Group className="mb-3 mt-1" controlId="formBasicChecbox">
+                        <Form.Group className="mb-3 mt-1" controlId="frmSaleII">
                             <Form.Check type="checkbox" label="Purchase Information" style={{ color: 'black' }} />
                         </Form.Group>
                         <hr />
-                        <FormInput label="Cost Price" onChange={{}} />
+                        <FormInput label="Cost Price" onChange={(event)=>{}} />
                         <Account />
-                        <DescriptionInput placeholder="" onChange={{}} />
+                        <DescriptionInput placeholder="" onChange={(event)=>{}} />
                         <Tax />
                         <PreferVendor />
                         <Col md={12} className="mt-4">
