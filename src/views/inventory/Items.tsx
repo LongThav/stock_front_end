@@ -1,35 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Row, Col, Container, Button, Card, Table, Form, Pagination } from 'react-bootstrap';
-import { FaPlus, FaTh, FaList} from 'react-icons/fa';
+import { FaPlus, FaTh, FaList } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { itemReq } from 'redux/actions/inventoryAction/itemAction';
+import { selectLoading, selectItems, selectPageable, selectTotalPages, selectTotalElements, selectError } from '../../selector/inventory/itemSelector';
 
 const itemsPerPage = 10;
 
 const ItemView = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [selectedRows, setSelectedRows] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [view, setView] = useState('table'); // 'table' or 'grid'
 
-  // Sample data with image URLs and product information
-  const items = [
-    { id: 1, name: 'Dining Set', sku: 'Item 1 sku', type: 'Furniture', description: 'A stylish dining set with a table and four chairs.', rating: '$4716.00', image: 'https://via.placeholder.com/40' },
-    { id: 2, name: 'Coffee Table', sku: 'Item 2 sku', type: 'Furniture', description: 'A modern coffee table.', rating: '$316.00', image: 'https://via.placeholder.com/40' },
-    { id: 3, name: 'Armchair', sku: 'Item 3 sku', type: 'Furniture', description: 'A comfy armchair.', rating: '$4716.00', image: 'https://via.placeholder.com/40' },
-    { id: 4, name: 'Sofa Set', sku: 'Item 4 sku', type: 'Furniture', description: 'A modern sofa set.', rating: '$500.00', image: 'https://via.placeholder.com/40' },
-    { id: 5, name: 'Bookcase', sku: 'Item 5 sku', type: 'Furniture', description: 'A stylish bookcase.', rating: '$600.00', image: 'https://via.placeholder.com/40' },
-    { id: 6, name: 'Desk', sku: 'Item 6 sku', type: 'Office', description: 'A modern desk.', rating: '$1200.00', image: 'https://via.placeholder.com/40' },
-    { id: 7, name: 'Bed Frame', sku: 'Item 7 sku', type: 'Furniture', description: 'A high-quality bed frame.', rating: '$250.00', image: 'https://via.placeholder.com/40' },
-    { id: 8, name: 'Dining Table', sku: 'Item 8 sku', type: 'Furniture', description: 'An elegant dining table.', rating: '$350.00', image: 'https://via.placeholder.com/40' },
-    { id: 9, name: 'Chair', sku: 'Item 9 sku', type: 'Furniture', description: 'A stylish chair.', rating: '$800.00', image: 'https://via.placeholder.com/40' },
-    { id: 10, name: 'Cabinet', sku: 'Item 10 sku', type: 'Furniture', description: 'A stylish cabinet.', rating: '$400.00', image: 'https://via.placeholder.com/40' },
-    { id: 11, name: 'Table Lamp', sku: 'Item 11 sku', type: 'Lighting', description: 'A modern table lamp.', rating: '$700.00', image: 'https://via.placeholder.com/40' },
-    { id: 12, name: 'Floor Lamp', sku: 'Item 12 sku', type: 'Lighting', description: 'A stylish floor lamp.', rating: '$250.00', image: 'https://via.placeholder.com/40' }
-    // Add more items as needed
-  ];
+  // const state = useSelector(state => state);
 
-  const totalPages = Math.ceil(items.length / itemsPerPage);
+  // Access specific part of Redux state
+  const loading = useSelector(selectLoading);
+  const item = useSelector(selectItems);
+  const pageable = useSelector(selectPageable);
+  const totalPages = useSelector(selectTotalPages);
+  const totalElements = useSelector(selectTotalElements);
+  const error = useSelector(selectError);
+
+  useEffect(() => {
+    dispatch(itemReq());
+  }, [dispatch]);
+
+  // Sample data with image URLs and product information
+
+  const totalPage = Math.ceil(item.length / itemsPerPage);
 
   const handleSelectAll = () => {
     if (selectAll) {
@@ -53,18 +56,20 @@ const ItemView = () => {
     setSelectAll(false); // Reset select all when changing page
   };
 
-  const currentItems = items.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+  const currentItems = item.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   const handleAddButtonClick = () => {
     navigate('/inventory/items/new'); // Navigate to the AddItem page
   };
+
+
 
   return (
     <React.Fragment>
       <Container style={{ padding: 0 }}>
         <Row className="justify-content-between align-items-center">
           <Col>
-            <h1 style={{ fontSize: 25, fontWeight: 'normal', fontFamily: 'sans-serif' }}>All Items</h1>
+            <h1 style={{ fontSize: 20, fontWeight: 'normal', fontFamily: 'sans-serif' }}>All Items</h1>
           </Col>
           <Col className="text-end">
             <Button
@@ -96,8 +101,9 @@ const ItemView = () => {
             </Button>
           </Col>
         </Row>
+        
         <Card className="mt-2">
-          <Card.Body>
+          {loading ? <p style={{textAlign: 'left', paddingTop: '15px', paddingLeft: '15px'}}>Loading...</p> : error ? <p style={{textAlign: 'left', paddingTop: '15px', paddingLeft: '15px'}}>{error}</p> :  <Card.Body>
             {view === 'table' ? (
               <Table responsive hover>
                 <thead>
@@ -109,16 +115,19 @@ const ItemView = () => {
                         onChange={handleSelectAll}
                       />
                     </th>
-                    <th style={{ }}>NAME</th>
-                    <th style={{ }}>SKU</th>
-                    <th style={{ }}>TYPE</th>
-                    <th style={{ }}>DESCRIPTION</th>
-                    <th style={{ }}>RATE</th>
+                    <th style={{}}>NAME</th>
+                    <th style={{}}>SKU</th>
+                    <th style={{}}>TYPE</th>
+                    <th style={{}}>DESCRIPTION</th>
+                    <th style={{}}>RATE</th>
                   </tr>
                 </thead>
+                {/* {loading && <p>Loading...</p>}
+                {error && <p>Error: {error}</p>} */}
                 <tbody>
+
                   {currentItems.map(item => (
-                    <tr key={item.id}>
+                    <tr key={item.itemID}>
                       <td>
                         <Form.Check
                           type="checkbox"
@@ -129,8 +138,8 @@ const ItemView = () => {
                       <td>
                         <div style={{ display: 'flex', alignItems: 'center', fontSize: 12, fontWeight: 'bold', color: 'grey' }}>
                           <img
-                            src={item.image}
-                            alt={item.name}
+                            src={'https://via.placeholder.com/40'}
+                            alt={'https://via.placeholder.com/40'}
                             style={{
                               borderRadius: '50%',
                               width: '40px',
@@ -142,10 +151,10 @@ const ItemView = () => {
                           {item.name}
                         </div>
                       </td>
-                      <td style={{ }}>{item.sku}</td>
-                      <td style={{ }}>{item.type}</td>
-                      <td style={{ }}>{item.description}</td>
-                      <td style={{ }}>{item.rating}</td>
+                      <td style={{}}>{item.sku}</td>
+                      <td style={{}}>{item.type}</td>
+                      <td style={{}}>{item.salesDescription}</td>
+                      <td style={{}}>{item.salesUnitPrice}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -176,7 +185,7 @@ const ItemView = () => {
                   onClick={() => handlePageChange(currentPage - 1)}
                   disabled={currentPage === 1}
                 />
-                {[...Array(totalPages).keys()].map(pageNumber => (
+                {[...Array(totalPage).keys()].map(pageNumber => (
                   <Pagination.Item
                     key={pageNumber + 1}
                     active={pageNumber + 1 === currentPage}
@@ -187,11 +196,12 @@ const ItemView = () => {
                 ))}
                 <Pagination.Next
                   onClick={() => handlePageChange(currentPage + 1)}
-                  disabled={currentPage === totalPages}
+                  disabled={currentPage === totalPage}
                 />
               </Pagination>
             </div>
-          </Card.Body>
+          </Card.Body>}
+         
         </Card>
       </Container>
     </React.Fragment>

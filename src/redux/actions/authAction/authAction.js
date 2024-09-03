@@ -1,5 +1,6 @@
 // src/redux/actions/authActions.js
-import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, REGISTER_REQUEST, REGISTER_SUCCESS, REGISTER_FAILURE } from '../actionTypes/authActionType';
+import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, REGISTER_REQUEST, REGISTER_SUCCESS, REGISTER_FAILURE } from "redux/actionTypes/authActionType/authActionType";
+
 
 export const login = (credentials, callback) => ({
     type: LOGIN_REQUEST,

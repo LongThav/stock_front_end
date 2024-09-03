@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Col, Row, Form, Card, FormControl, InputGroup, Dropdown, Button } from "react-bootstrap";
 import { MdClear } from "react-icons/md";
 import { FaCircleQuestion } from "react-icons/fa6"; // Example question mark icon from FontAwesome
@@ -12,11 +12,27 @@ import FormInput from "components/inventory/form";
 import Account from "./Account";
 import DescriptionInput from "components/inventory/description";
 import Tax from "./Tax";
+import { useSelector, useDispatch } from 'react-redux';
 import PreferVendor from "./PreferredVendor";
+import { unitReq } from "redux/actions/inventoryAction/unitAction";
+import { manufacturerReq } from "redux/actions/inventoryAction/manfactureAction";
+import { selectDataUnit, selectErrorUnit, selectLoadingUnit } from "selector/inventory/unitSelector";
+
 
 
 const AddItem = () => {
+    const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    // const state = useSelector(state => state);
+
+    //Unit
+    const loadingUnit = useSelector(selectLoadingUnit);
+    const errorUnit = useSelector(selectErrorUnit);
+    const unitData = useSelector(selectDataUnit);
+
+
+
     const popToItem = () => {
         navigate('/inventory/items', { replace: true });
     };
@@ -28,6 +44,12 @@ const AddItem = () => {
     const [kilo, setKilo] = useState('kg');
     const [returnable, setReturnable] = useState(false);
     const dropdownRef = useRef(null);
+
+    useEffect(() => {
+        dispatch(unitReq());
+        dispatch(manufacturerReq());
+    }, [dispatch]);
+
 
     const handleUnitChange = (event) => {
         setUnit(event.target.value);
@@ -76,6 +98,10 @@ const AddItem = () => {
             dropdownRef.current.toggleMenu();
         }
     };
+
+
+    // console.log("Unit Data: ", unitData);
+
 
     return (
         <div style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
@@ -159,12 +185,12 @@ const AddItem = () => {
                             </Row>
                             <InputGroup>
                                 <Form.Control as="select" defaultValue={""}>
-                                    <option value="" disabled  hidden>Select or type to add</option>
-                                    <option>DOZEN</option>
-                                    <option>BOX</option>
-                                    <option>GRAMS</option>
-                                    <option>KILOGRAMS</option>
-                                    <option>TABLETS</option>
+                                    <option value="" disabled hidden>Select or type to add</option>
+                                    {unitData && unitData.map((unit, index) => {
+                                        return (
+                                            <option key={index} value={unit.unitID}>{unit.name}</option>
+                                        );
+                                    })}
                                 </Form.Control>
                                 <InputGroup.Text>
                                     <FaChevronDown size={12} />
@@ -285,17 +311,17 @@ const AddItem = () => {
                         <Form.Group className="mb-3 mt-1" controlId="frmSaleI">
                             <Form.Check type="checkbox" label="Sales Information" style={{ color: 'black' }} />
                         </Form.Group>
-                        <FormInput label="Selling Price" onChange={(event)=>{}} />
+                        <FormInput label="Selling Price" onChange={(event) => { }} />
                         <Account />
-                        <DescriptionInput placeholder="" onChange={(event)=>{}} />
+                        <DescriptionInput placeholder="" onChange={(event) => { }} />
                         <Tax />
                         <Form.Group className="mb-3 mt-1" controlId="frmSaleII">
                             <Form.Check type="checkbox" label="Purchase Information" style={{ color: 'black' }} />
                         </Form.Group>
                         <hr />
-                        <FormInput label="Cost Price" onChange={(event)=>{}} />
+                        <FormInput label="Cost Price" onChange={(event) => { }} />
                         <Account />
-                        <DescriptionInput placeholder="" onChange={(event)=>{}} />
+                        <DescriptionInput placeholder="" onChange={(event) => { }} />
                         <Tax />
                         <PreferVendor />
                         <Col md={12} className="mt-4">

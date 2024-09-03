@@ -36,7 +36,7 @@ const ApiManager = {
             return data.token;
         } catch (error) {
             console.error("Token refresh error:", error);
-            ApiManager.logout(); // Logout user if token refresh fails
+            // ApiManager.logout(); // Logout user if token refresh fails
             throw error;
         }
     },
@@ -69,7 +69,7 @@ const ApiManager = {
                     },
                 });
 
-                if (response.status === 401) {
+                if (response.status === 403) {
                     // If still unauthorized, logout
                     ApiManager.logout();
                 }
@@ -80,7 +80,8 @@ const ApiManager = {
             }
             return await response.json();
         } catch (error) {
-            console.error("Request error:", error);
+            // console.error("Request error vjsbvkjsbv:", error);
+            // ApiManager.logout();
             throw error;
         }
     },

@@ -5,8 +5,7 @@ import { Formik } from 'formik';
 import '../../auth/signin/style/JWTLogin.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { login } from 'redux/actions/authAction';
-
+import { login } from 'redux/actions/authAction/authAction';
 
 const JWTLogin = () => {
   const dispatch = useDispatch();
